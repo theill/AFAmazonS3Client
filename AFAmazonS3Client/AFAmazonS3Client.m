@@ -280,8 +280,7 @@ NSString * AFBase64EncodedStringFromData(NSData *data) {
   NSData *data = [NSURLConnection sendSynchronousRequest:filerequest returningResponse:&response error:&error];
 
   if (data && response) {
-    NSMutableURLRequest *request = [super requestWithMethod:@"PUT" path:destinationPath parameters:nil];
-    [self appendAuthorizationHeaderToRequest:request];
+    NSMutableURLRequest *request = [self requestWithMethod:@"PUT" path:destinationPath parameters:nil];
     [request setHTTPBody:data];
 
     AFHTTPRequestOperation *requestOperation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -348,6 +347,7 @@ NSString * AFBase64EncodedStringFromData(NSData *data) {
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method path:(NSString *)path parameters:(NSDictionary *)parameters {
 	NSMutableURLRequest *request = [super requestWithMethod:method path:path parameters:parameters];
+  [request setValue:@"public-read" forHTTPHeaderField:@"x-amz-acl"];
 	[self appendAuthorizationHeaderToRequest:request];
 	return request;
 }
