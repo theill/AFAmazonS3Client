@@ -348,6 +348,12 @@ NSString * AFBase64EncodedStringFromData(NSData *data) {
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method path:(NSString *)path parameters:(NSDictionary *)parameters {
 	NSMutableURLRequest *request = [super requestWithMethod:method path:path parameters:parameters];
   [request setValue:@"public-read" forHTTPHeaderField:@"x-amz-acl"];
+  if ([[path pathExtension] isEqualToString:@"jpg"]) {
+    [request setValue:@"image/jpeg" forHTTPHeaderField:@"Content-Type"];
+  }
+  else if ([[path pathExtension] isEqualToString:@"png"]) {
+    [request setValue:@"image/png" forHTTPHeaderField:@"Content-Type"];
+  }
 	[self appendAuthorizationHeaderToRequest:request];
 	return request;
 }
